@@ -6,6 +6,7 @@ import me.rampen88.tokens.util.ItemEnchant;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -35,8 +36,48 @@ public class GiveItem implements ItemAction{
 
 	@Override
 	public void executeAction(Player p, Tokens plugin) {
-		// TODO: Drop item if full inventory
-		p.getInventory().addItem(itemBuilder.buildItem(mat, 1, name, damage, enchants, lore, flags, p));
+
+		ItemStack item = itemBuilder.buildItem(mat, amount, name, damage, enchants, lore, flags, p);
+
+		int free = getFreeSlots(p.getInventory().getStorageContents(), item);
+		if(free >= item.getAmount()){
+
+			p.getInventory().addItem(item);
+
+		}else{
+			int amountToDrop = item.getAmount() - free;
+
+			if (free > 0) {
+				item.setAmount(free);
+				p.getInventory().addItem(item);
+			}
+
+			while(amountToDrop > 0){
+
+				ItemStack drop = new ItemStack(item);
+				int toDrop;
+
+				if(amountToDrop > item.getMaxStackSize()){
+					amountToDrop -= item.getMaxStackSize();
+					toDrop = item.getMaxStackSize();
+				}else{
+					toDrop = amountToDrop;
+					amountToDrop = 0;
+				}
+
+				drop.setAmount(toDrop);
+				p.getWorld().dropItem(p.getLocation(), drop);
+			}
+		}
+	}
+
+	private int getFreeSlots(ItemStack[] contents, ItemStack item){
+		int free = 0;
+		for (ItemStack i : contents) {
+			if (i == null || i.getType() == Material.AIR)
+				free += item.getMaxStackSize();
+		}
+		return free;
 	}
 
 
