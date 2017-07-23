@@ -1,0 +1,34 @@
+name: rTokens
+version: ${project.version}
+author: rampen88
+main: me.rampen88.tokens.Tokens
+softdepend: [PlaceholderAPI]
+commands:
+  rtokens:
+    description: Its a command.
+    aliases: [token, tokens, rtoken]
+permissions:
+   tokens.command.reload:
+     description: gives access to /rtokens reload command.
+     default: op
+   tokens.command.add:
+     description: gives access to /rtokens add command.
+     default: op
+   tokens.command.view:
+     description: gives access to /rtokens view command
+     default: true
+   tokens.command.view.other:
+     description: lets you view another users tokens.
+     default: op
+   tokens.command.help:
+     description: includes the user commands when doing the help command.
+     default: true
+   tokens.command.help.admin:
+     description: includes the admin commands when doing the help command.
+     default: op
+   tokens.command.take:
+     description: gives access to /rtokens take command.
+     default: op
+   tokens.command.send:
+     description: gives access to /rtokens send command.
+     default: op

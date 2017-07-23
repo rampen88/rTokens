@@ -1,0 +1,84 @@
+Title: '&eTokens Shop'
+Rows: 5
+
+# Commands. 'command1;command2;command3' and so on.
+Commands: 'tokenshop;tshop'
+
+
+# Placeholders in both name and lore is supported, if UsePlaceholderAPI is true in the main config.
+Items:
+  # Does not matter what this is, as long as its unique.
+  TestItem:
+    # Material of the item. Valid materials: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+    Material: DIAMOND_PICKAXE
+
+    # Name of the item.
+    Name: '&bTest Item'
+
+    # Lore of the item.
+    Lore:
+      - '&7Lore -II'
+      - ''
+      - '&7Click to buy!'
+      - '&7Cost: 50'
+
+    # How many tokens is needed to buy this item.
+    Cost: 50
+
+    # The TablePrefix from the main config is added before this, and the plugin creates a table where it stores the UUIDs of people who bought this.
+    # Sends a message to the player in chat if their uuid is in this table.
+    ItemTable: testPickaxe
+
+    # What happens when you click the item in the inventory.
+    # Give Item: GI::<Name from GiveItems section> - Gives the item to the player.
+    # Command: CMD::<command to run> - Executes a command as console, only supports %player% placeholder.
+    # Open Inventory: OI::<filename.yml>
+    ItemAction:
+      - 'GI::TestPickaxe'
+      - 'CMD::say %player% bought the TestItem!'
+
+    # Valid item flags: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/ItemFlag.html
+    ItemFlags:
+      - 'HIDE_ATTRIBUTES'
+      - 'HIDE_ENCHANTS'
+
+    # ENCHANTMENT,LEVEL List of all enchantments: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html
+    Enchantments:
+      - 'DURABILITY,0'
+
+    # If the inventory should close after clicking the item
+    CloseInventory: true
+
+    # Item damage.
+    #Damage: 0
+
+    # Position of the item in the Inventory.
+    Position-X: 5
+    Position-Y: 3
+
+GiveItems:
+  TestPickaxe:
+    # Material of the item. Valid materials: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+    Material: DIAMOND_PICKAXE
+
+    # Name of the item.
+    Name: '&bTest Item'
+
+    # How many of the item to give.
+    Amount: 1
+
+    # Lore of the item.
+    Lore:
+      - '&7Lore -II'
+
+    # Valid item flags: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/inventory/ItemFlag.html
+    ItemFlags:
+      - 'HIDE_ATTRIBUTES'
+
+    # ENCHANTMENT,LEVEL List of all enchantments: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/enchantments/Enchantment.html
+    Enchantments:
+      - 'DIG_SPEED,10'
+      - 'DURABILITY,10'
+
+    # Item damage.
+    #Damage: 0

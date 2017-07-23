@@ -1,0 +1,63 @@
+# Currently only supports MySQL.
+StorageType: MySQL
+
+# If the plugin should use PlaceholderAPI to set placeholder for the items in the menus.
+UsePlaceholderAPI: true
+
+MySql:
+  Database: 'Database'
+  Username: 'user'
+  Password: 'pass'
+  Host: 'localhost'
+  Port: '3306'
+  UseSSL: true
+  TablePrefix: 'tokenshop_'
+
+  # Connection pool settings
+  MaxPoolSize: 10
+  ConnectionTimeout: 30000
+  IdleTimeout: 600000
+  MaxLifetime: 1800000
+
+# If you click an item in the Inventory, it takes this amount of time (in ms) before clicking the same or another item does something.
+# Prevents spam clicking from causing issues.
+InventoryClickDelay: 400
+
+Messages:
+  AlreadyBought: '&cYou cannot buy this item more than once!'
+  NoPermission: '&4You do not have permission to do that.'
+  NotEnough: '&cYou do not have enough tokens to buy that!'
+  Commands:
+    Amount: '&cAmount cannot be 0 or less.'
+    PlayerNotOnline: '&cUnable to find player ''%player%''. Are they online?'
+    Add:
+      Usage: '&cIncorrect command usage. Try: /rTokens add <player> <amount>'
+      Added: '&aSuccessfully added %amount% tokens to %player%.'
+      Target: '&aYou have received %amount% tokens.'
+    Take:
+      Usage: '&cIncorrect command usage. Try: /rTokens take <player> <amount>'
+      Removed: '&aSuccessfully removed %amount% tokens from %player%.'
+      Error: '&cSomething went wrong trying to take tokens from %player%! Do they have enough?'
+      Target: '&c%amount% of your tokens vanished.'
+    View:
+      Self: '&7You currently have &a%amount% &7Tokens.'
+      Other: '&a%player% &7current has &a%amount% &7Tokens.'
+      OtherUsage: '&cIncorrect command usage. Try: /rTokens view [player]'
+    Send:
+      Sent: '&aYou''ve sent %amount% tokens to %player%'
+      Received: '&a%player% has sent you %amount% tokens'
+      NotEnough: '&aYou do not have enough tokens to do that.'
+      Usage: '&cIncorrect command usage. Try: /rTokens send <player> <amount>'
+      NotSelf: '&cYou cannot send credits to yourself.'
+    Reload: '&aAttempted to reload configuration. Please restart for changes with the storage.'
+    Help:
+      Top:
+        - '&e============== &fTokens Help &e=============='
+      User:
+        - '&e/rTokens view &7- See how many tokens you have'
+        - '&e/rTokens view [player] &7- See how many tokens [player] has'
+        - '&e/rTokens send <player> <amount> &7- Send tokens to another player'
+      Admin:
+        - '&e/rTokens add <player> <amount> &7- Adds tokens to the player'
+        - '&e/rTokens take <player> <amount> &7- Takes tokens from the player'
+        - '&e/rTokens reload &7- Reloads most of the configuration.'
