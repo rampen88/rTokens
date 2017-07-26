@@ -5,8 +5,8 @@ import me.rampen88.tokens.hooks.PlaceholderAPIHook;
 import me.rampen88.tokens.listeners.MenuListener;
 import me.rampen88.tokens.listeners.PlayerListener;
 import me.rampen88.tokens.menu.InventoryMaster;
-import me.rampen88.tokens.storage.IStorage;
-import me.rampen88.tokens.storage.MySqlStorage;
+import me.rampen88.tokens.storage.Storage;
+import me.rampen88.tokens.storage.MySqlStorageImpl;
 import me.rampen88.tokens.util.ItemBuilder;
 import me.rampen88.tokens.util.MessageUtil;
 
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class Tokens extends JavaPlugin{
 
-	private IStorage storage;
+	private Storage storage;
 	private MessageUtil messageUtil;
 	private static ItemBuilder itemBuilder;
 	private InventoryMaster inventoryMaster;
@@ -71,10 +71,10 @@ public class Tokens extends JavaPlugin{
 		HandlerList.unregisterAll(this);
 	}
 
-	private IStorage setupStorage(){
+	private Storage setupStorage(){
 		switch (getConfig().getString("StorageType").toLowerCase()){
 			case "mysql":
-				return new MySqlStorage(this);
+				return new MySqlStorageImpl(this);
 			default:
 				getLogger().info("I said the only supported storage type was MySQL. Now you broke the plugin. great job.");
 				return null;
@@ -96,7 +96,7 @@ public class Tokens extends JavaPlugin{
 		return placeholderAPIHook != null ? placeholderAPIHook.applyPlaceholders(p, s) : s;
 	}
 
-	public IStorage getStorage() {
+	public Storage getStorage() {
 		return storage;
 	}
 

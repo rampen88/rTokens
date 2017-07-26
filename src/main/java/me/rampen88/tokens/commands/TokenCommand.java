@@ -1,7 +1,7 @@
 package me.rampen88.tokens.commands;
 
 import me.rampen88.tokens.Tokens;
-import me.rampen88.tokens.storage.IStorage;
+import me.rampen88.tokens.storage.Storage;
 import me.rampen88.tokens.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -184,7 +184,7 @@ public class TokenCommand implements CommandExecutor{
 			return;
 		}
 
-		IStorage storage = plugin.getStorage();
+		Storage storage = plugin.getStorage();
 
 		storage.takeTokens(p, amount, value -> {
 

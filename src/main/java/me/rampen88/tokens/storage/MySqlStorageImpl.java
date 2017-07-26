@@ -12,13 +12,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MySqlStorage implements IStorage {
+public class MySqlStorageImpl implements Storage {
 
 	private Tokens plugin;
 	private HikariDataSource dataSource;
 	private String tablePrefix;
 
-	public MySqlStorage(Tokens plugin) {
+	public MySqlStorageImpl(Tokens plugin) {
 		this.plugin = plugin;
 
 		HikariConfig cpConfig = new HikariConfig();
@@ -62,8 +62,10 @@ public class MySqlStorage implements IStorage {
 
 				try(Connection connection = dataSource.getConnection()){
 
-					PreparedStatement preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + tablePrefix + "users (uuid VARCHAR(36) NOT NULL UNIQUE, tokens INT NOT NULL);");
-					preparedStatement.execute();
+					PreparedStatement statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + tablePrefix + "users (uuid VARCHAR(36) NOT NULL UNIQUE, tokens INT NOT NULL);");
+
+					statement.execute();
+					statement.close();
 
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -86,6 +88,7 @@ public class MySqlStorage implements IStorage {
 					statement.setInt(3, amount);
 
 					statement.execute();
+					statement.close();
 
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -123,6 +126,8 @@ public class MySqlStorage implements IStorage {
 						}
 					}.runTask(plugin);
 
+					statement.close();
+
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -156,6 +161,8 @@ public class MySqlStorage implements IStorage {
 						}
 					}.runTask(plugin);
 
+					statement.close();
+
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -186,6 +193,8 @@ public class MySqlStorage implements IStorage {
 						}
 					}.runTask(plugin);
 
+					statement.close();
+
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -206,6 +215,7 @@ public class MySqlStorage implements IStorage {
 					statement.setString(1, uuid);
 
 					statement.execute();
+					statement.close();
 
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -223,8 +233,10 @@ public class MySqlStorage implements IStorage {
 
 				try(Connection connection = dataSource.getConnection()){
 
-					PreparedStatement preparedStatement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + tablePrefix + tableName + " (uuid VARCHAR(36) NOT NULL UNIQUE);");
-					preparedStatement.execute();
+					PreparedStatement statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + tablePrefix + tableName + " (uuid VARCHAR(36) NOT NULL UNIQUE);");
+
+					statement.execute();
+					statement.close();
 
 				} catch (SQLException e) {
 					e.printStackTrace();

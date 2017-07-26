@@ -2,7 +2,7 @@ package me.rampen88.tokens.storage;
 
 import org.bukkit.entity.Player;
 
-public interface IStorage {
+public interface Storage {
 
 	void addTokens(Player p, int amount);
 
