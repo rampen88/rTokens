@@ -93,7 +93,7 @@ public class TokenCommand implements CommandExecutor{
 	}
 
 	private void viewTokens(Player p, CommandSender sender){
-		plugin.getStorage().getTokens(p, value -> sender.sendMessage(messageUtil.getMessage("Commands.View.Other").replace("%player%", p.getName()).replace("%amount%", Integer.toString(value))));
+		plugin.getStorage().getTokens(p.getUniqueId().toString(), value -> sender.sendMessage(messageUtil.getMessage("Commands.View.Other").replace("%player%", p.getName()).replace("%amount%", Integer.toString(value))));
 	}
 
 	private void addTokens(CommandSender commandSender, String[] args) {
@@ -118,7 +118,7 @@ public class TokenCommand implements CommandExecutor{
 		if (p == null) return;
 
 		// Add the tokens
-		plugin.getStorage().addTokens(p, amount);
+		plugin.getStorage().addTokens(p.getUniqueId().toString(), amount);
 
 		// Inform both the target and the sender
 		p.sendMessage(messageUtil.getMessage("Commands.Add.Target").replace("%amount%", amount.toString()));
@@ -150,7 +150,7 @@ public class TokenCommand implements CommandExecutor{
 		if(p == null) return;
 
 		// Take the credits from the player.
-		plugin.getStorage().takeTokens(p, amount, value -> takenTokens(p, commandSender, amount, value == 1));
+		plugin.getStorage().takeTokens(p.getUniqueId().toString(), amount, value -> takenTokens(p, commandSender, amount, value == 1));
 
 	}
 
@@ -186,12 +186,12 @@ public class TokenCommand implements CommandExecutor{
 
 		Storage storage = plugin.getStorage();
 
-		storage.takeTokens(p, amount, value -> {
+		storage.takeTokens(p.getUniqueId().toString(), amount, value -> {
 
 			if(value == 0){
 				p.sendMessage(messageUtil.getMessage("Commands.Send.NotEnough"));
 			}else{
-				storage.addTokens(target, amount);
+				storage.addTokens(target.getUniqueId().toString(), amount);
 
 				p.sendMessage(messageUtil.getMessage("Commands.Send.Sent").replace("%player%", target.getName()).replace("%amount%", amount.toString()));
 				target.sendMessage(messageUtil.getMessage("Commands.Send.Received").replace("%player%", p.getName()).replace("%amount%", amount.toString()));

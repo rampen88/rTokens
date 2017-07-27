@@ -4,7 +4,6 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import me.rampen88.tokens.Tokens;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.Connection;
@@ -75,175 +74,118 @@ public class MySqlStorageImpl implements Storage {
 		}.runTaskAsynchronously(plugin);
 	}
 
-	public void addTokens(Player p, int amount){
-		new BukkitRunnable(){
-			@Override
-			public void run() {
+	public void addTokens(String uuid, int amount){
+		try(Connection connection = dataSource.getConnection()){
 
-				try(Connection connection = dataSource.getConnection()){
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (uuid, tokens) VALUES (?,?) ON DUPLICATE KEY UPDATE tokens=tokens+?;");
+			statement.setString(1, uuid);
+			statement.setInt(2, amount);
+			statement.setInt(3, amount);
 
-					PreparedStatement statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (uuid, tokens) VALUES (?,?) ON DUPLICATE KEY UPDATE tokens=tokens+?;");
-					statement.setString(1, p.getUniqueId().toString());
-					statement.setInt(2, amount);
-					statement.setInt(3, amount);
+			statement.execute();
+			statement.close();
 
-					statement.execute();
-					statement.close();
-
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-
-
-			}
-		}.runTaskAsynchronously(plugin);
-
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void takeTokens(Player p, Integer amount, StorageCallback toRunSync){
-		new BukkitRunnable(){
+	public void takeTokens(String uuid, Integer amount, StorageCallback toRunSync){
+		try(Connection connection = dataSource.getConnection()){
 
-			@Override
-			public void run() {
+			PreparedStatement statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET tokens=CASE WHEN tokens>=? THEN tokens-? ELSE tokens END WHERE uuid=?;");
+			statement.setInt(1, amount);
+			statement.setInt(2, amount);
+			statement.setString(3, uuid);
 
-				try(Connection connection = dataSource.getConnection()){
+			int rowsAffected = statement.executeUpdate();
+			if(rowsAffected > 1)
+				plugin.getLogger().warning("More than 1 row(s) got updated when taking credits from player: " + uuid + ". This should never happen!");
 
-					PreparedStatement statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET tokens=CASE WHEN tokens>=? THEN tokens-? ELSE tokens END WHERE uuid=?;");
-					statement.setInt(1, amount);
-					statement.setInt(2, amount);
-					statement.setString(3, p.getUniqueId().toString());
+			runSync(toRunSync, rowsAffected);
+			statement.close();
 
-					int rowsAffected = statement.executeUpdate();
-					if(rowsAffected > 1)
-						plugin.getLogger().warning("More than 1 row(s) got updated when taking credits from player: " + p.getName() + ". This should never happen!");
-
-
-					new BukkitRunnable(){
-
-						@Override
-						public void run() {
-							toRunSync.afterStorageCall(rowsAffected);
-						}
-					}.runTask(plugin);
-
-					statement.close();
-
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-
-			}
-		}.runTaskAsynchronously(plugin);
-
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void getTokens(Player p, StorageCallback toRunSync){
-		new BukkitRunnable(){
+	public void getTokens(String uuid, StorageCallback toRunSync){
+		try(Connection connection = dataSource.getConnection()){
 
-			@Override
-			public void run() {
+			PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + tablePrefix + "users WHERE uuid=?;");
+			statement.setString(1, uuid);
 
-				try(Connection connection = dataSource.getConnection()){
-
-					PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + tablePrefix + "users WHERE uuid=?;");
-					statement.setString(1, p.getUniqueId().toString());
-
-					ResultSet resultSet = statement.executeQuery();
+			ResultSet resultSet = statement.executeQuery();
 
 
-					int tokens = getInt(resultSet, "tokens");
+			int tokens = getInt(resultSet, "tokens");
 
-					new BukkitRunnable(){
+			runSync(toRunSync, tokens);
+			statement.close();
 
-						@Override
-						public void run() {
-							toRunSync.afterStorageCall(tokens);
-						}
-					}.runTask(plugin);
-
-					statement.close();
-
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-
-			}
-		}.runTaskAsynchronously(plugin);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void checkTable(String uuid, String tableName, StorageCallback toRunSync){
-		new BukkitRunnable(){
+		try(Connection connection = dataSource.getConnection()){
 
-			@Override
-			public void run() {
-				try(Connection connection = dataSource.getConnection()){
+			PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) AS uuidCount FROM "+ tablePrefix + tableName + " WHERE uuid=?;");
+			statement.setString(1, uuid);
 
-					PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) AS uuidCount FROM "+ tablePrefix + tableName + " WHERE uuid=?;");
-					statement.setString(1, uuid);
+			ResultSet resultSet = statement.executeQuery();
 
-					ResultSet resultSet = statement.executeQuery();
+			int uuidCount = getInt(resultSet, "uuidCount");
 
-					int uuidCount = getInt(resultSet, "uuidCount");
+			runSync(toRunSync, uuidCount);
+			statement.close();
 
-					new BukkitRunnable(){
-
-						@Override
-						public void run() {
-							toRunSync.afterStorageCall(uuidCount);
-						}
-					}.runTask(plugin);
-
-					statement.close();
-
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-
-
-		}.runTaskAsynchronously(plugin);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void addToTable(String uuid, String tableName){
-		new BukkitRunnable(){
+		try(Connection connection = dataSource.getConnection()){
 
-			@Override
-			public void run() {
-				try(Connection connection = dataSource.getConnection()){
+			PreparedStatement statement = connection.prepareStatement("INSERT IGNORE INTO " + tablePrefix + tableName + " (uuid) VALUES(?);");
+			statement.setString(1, uuid);
 
-					PreparedStatement statement = connection.prepareStatement("INSERT IGNORE INTO " + tablePrefix + tableName + " (uuid) VALUES(?);");
-					statement.setString(1, uuid);
+			statement.execute();
+			statement.close();
 
-					statement.execute();
-					statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-
-
-		}.runTaskAsynchronously(plugin);
 	}
 
 	public void setupTable(String tableName){
+		try(Connection connection = dataSource.getConnection()){
+
+			PreparedStatement statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + tablePrefix + tableName + " (uuid VARCHAR(36) NOT NULL UNIQUE);");
+
+			statement.execute();
+			statement.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void close(){
+		dataSource.close();
+	}
+
+	private void runSync(StorageCallback storageCallback, int value){
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-
-				try(Connection connection = dataSource.getConnection()){
-
-					PreparedStatement statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS " + tablePrefix + tableName + " (uuid VARCHAR(36) NOT NULL UNIQUE);");
-
-					statement.execute();
-					statement.close();
-
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-
+				storageCallback.afterStorageCall(value);
 			}
-		}.runTaskAsynchronously(plugin);
+		}.runTask(plugin);
 	}
 
 	private int getInt(ResultSet rs, String columnLabel) throws SQLException {
@@ -252,4 +194,5 @@ public class MySqlStorageImpl implements Storage {
 		else
 			return 0;
 	}
+
 }

@@ -5,6 +5,7 @@ import me.rampen88.tokens.hooks.PlaceholderAPIHook;
 import me.rampen88.tokens.listeners.MenuListener;
 import me.rampen88.tokens.listeners.PlayerListener;
 import me.rampen88.tokens.menu.InventoryMaster;
+import me.rampen88.tokens.storage.AsyncStorage;
 import me.rampen88.tokens.storage.Storage;
 import me.rampen88.tokens.storage.MySqlStorageImpl;
 import me.rampen88.tokens.util.ItemBuilder;
@@ -69,12 +70,13 @@ public class Tokens extends JavaPlugin{
 	@Override
 	public void onDisable() {
 		HandlerList.unregisterAll(this);
+		storage.close();
 	}
 
 	private Storage setupStorage(){
 		switch (getConfig().getString("StorageType").toLowerCase()){
 			case "mysql":
-				return new MySqlStorageImpl(this);
+				return new AsyncStorage(new MySqlStorageImpl(this), this);
 			default:
 				getLogger().info("I said the only supported storage type was MySQL. Now you broke the plugin. great job.");
 				return null;

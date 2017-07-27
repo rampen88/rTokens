@@ -2,7 +2,6 @@ package me.rampen88.tokens.menu.items;
 
 import me.rampen88.tokens.Tokens;
 import me.rampen88.tokens.menu.items.actions.ItemAction;
-import me.rampen88.tokens.storage.StorageCallback;
 import me.rampen88.tokens.util.ItemEnchant;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -37,7 +36,6 @@ public class InventoryTableItem extends InventoryRefreshItem{
 		}else{
 			return super.executeClick(p, plugin);
 		}
-
 
 		return closeInv;
 	}

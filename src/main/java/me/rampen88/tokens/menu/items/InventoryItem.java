@@ -2,7 +2,6 @@ package me.rampen88.tokens.menu.items;
 
 import me.rampen88.tokens.Tokens;
 import me.rampen88.tokens.menu.items.actions.ItemAction;
-import me.rampen88.tokens.storage.StorageCallback;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,7 +26,7 @@ public class InventoryItem {
 	public boolean executeClick(Player p, Tokens plugin){
 		if(cost != null){
 
-			plugin.getStorage().takeTokens(p, cost, value -> {
+			plugin.getStorage().takeTokens(p.getUniqueId().toString(), cost, value -> {
 				if(value >= 1){
 					doTheThing(p, plugin);
 				}else{
