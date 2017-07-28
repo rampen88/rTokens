@@ -117,8 +117,6 @@ public class MySqlStorageImpl implements Storage {
 			statement.setString(1, uuid);
 
 			ResultSet resultSet = statement.executeQuery();
-
-
 			int tokens = getInt(resultSet, "tokens");
 
 			runSync(toRunSync, tokens);
@@ -136,7 +134,6 @@ public class MySqlStorageImpl implements Storage {
 			statement.setString(1, uuid);
 
 			ResultSet resultSet = statement.executeQuery();
-
 			int uuidCount = getInt(resultSet, "uuidCount");
 
 			runSync(toRunSync, uuidCount);

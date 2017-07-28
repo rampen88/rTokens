@@ -4,7 +4,7 @@ import me.rampen88.tokens.commands.TokenCommand;
 import me.rampen88.tokens.hooks.PlaceholderAPIHook;
 import me.rampen88.tokens.listeners.MenuListener;
 import me.rampen88.tokens.listeners.PlayerListener;
-import me.rampen88.tokens.menu.InventoryMaster;
+import me.rampen88.tokens.menu.MenuHandler;
 import me.rampen88.tokens.storage.AsyncStorage;
 import me.rampen88.tokens.storage.Storage;
 import me.rampen88.tokens.storage.MySqlStorageImpl;
@@ -25,7 +25,7 @@ public class Tokens extends JavaPlugin{
 	private Storage storage;
 	private MessageUtil messageUtil;
 	private static ItemBuilder itemBuilder;
-	private InventoryMaster inventoryMaster;
+	private MenuHandler menuHandler;
 	private MenuListener menuListener;
 	private PlaceholderAPIHook placeholderAPIHook;
 
@@ -46,7 +46,7 @@ public class Tokens extends JavaPlugin{
 			placeholderAPIHook = new PlaceholderAPIHook();
 		}
 
-		inventoryMaster = new InventoryMaster(this);
+		menuHandler = new MenuHandler(this);
 
 		registerCommands();
 		registerListeners();
@@ -85,7 +85,7 @@ public class Tokens extends JavaPlugin{
 
 	public void reload(){
 		reloadConfig();
-		inventoryMaster.load();
+		menuHandler.load();
 		menuListener.reload();
 	}
 
@@ -110,8 +110,8 @@ public class Tokens extends JavaPlugin{
 		return itemBuilder;
 	}
 
-	public InventoryMaster getInventoryMaster() {
-		return inventoryMaster;
+	public MenuHandler getMenuHandler() {
+		return menuHandler;
 	}
 
 	public MenuListener getMenuListener() {

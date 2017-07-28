@@ -18,6 +18,7 @@ import java.util.UUID;
 
 public class MenuListener implements Listener{
 
+	private Map<UUID, Long> playerCooldown = new HashMap<>();
 	private Tokens plugin;
 	private long minDelay;
 
@@ -27,17 +28,24 @@ public class MenuListener implements Listener{
 	}
 
 	public void reload(){
-		// Get minimum delay, with 1000 as default.
 		minDelay = plugin.getConfig().getLong("InventoryClickDelay", 1000);
 	}
 
-	private Map<UUID, Long> playerCooldown = new HashMap<>();
+	@EventHandler
+	public void preCommand(PlayerCommandPreprocessEvent e){
+		// substring to remove the /
+		Menu m = plugin.getMenuHandler().getMenuFromCommand(e.getMessage().substring(1));
+		if(m != null){
+			e.setCancelled(true);
+			m.open(e.getPlayer());
+		}
+	}
 
 	@EventHandler
 	public void inventoryClickEvent(InventoryClickEvent e){
 		if(e.getInventory().getHolder() instanceof TokensMenuHolder){
-			e.setCancelled(true);
 
+			e.setCancelled(true);
 			if(e.getClickedInventory() == null){
 				return;
 			}
@@ -48,16 +56,10 @@ public class MenuListener implements Listener{
 			if(item != null){
 				Player p = (Player) e.getWhoClicked();
 
-				// Make sure player cant spam click items in inventory.
-				if (minDelay > 0) {
-					Long last = playerCooldown.get(p.getUniqueId());
-					long now = System.currentTimeMillis();
-
-					if(last != null && last > now) return;
-
-					// Add extra delay for certain items.
-					playerCooldown.put(p.getUniqueId(), now + minDelay + item.getExtraDelay());
-				}
+				if (isOnCooldown(p.getUniqueId()))
+					return;
+				else
+					playerCooldown.put(p.getUniqueId(), System.currentTimeMillis() + minDelay + item.getExtraDelay());
 
 				if(item.executeClick(p, plugin)){
 					delayClose(p);
@@ -66,8 +68,14 @@ public class MenuListener implements Listener{
 		}
 	}
 
-	void removePlayer(UUID id){
-		playerCooldown.remove(id);
+	private boolean isOnCooldown(UUID uuid){
+		if (minDelay > 0) {
+			Long last = playerCooldown.get(uuid);
+			long now = System.currentTimeMillis();
+
+			return last != null && last > now;
+		}
+		return false;
 	}
 
 	private void delayClose(Player p){
@@ -83,14 +91,9 @@ public class MenuListener implements Listener{
 		}.runTaskLater(plugin, 0L);
 	}
 
-	@EventHandler
-	public void preCommand(PlayerCommandPreprocessEvent e){
-		// substring to remove the /
-		Menu m = plugin.getInventoryMaster().getMenuFromCommand(e.getMessage().substring(1));
-		if(m != null){
-			e.setCancelled(true);
-			m.open(e.getPlayer());
-		}
+	void removePlayer(UUID id){
+		playerCooldown.remove(id);
 	}
+
 
 }

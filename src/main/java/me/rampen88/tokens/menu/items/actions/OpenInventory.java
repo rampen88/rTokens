@@ -13,6 +13,6 @@ public class OpenInventory implements ItemAction{
 
 	@Override
 	public void executeAction(Player p, Tokens plugin) {
-		plugin.getInventoryMaster().openInv(inventoryName, p);
+		plugin.getMenuHandler().openInv(inventoryName, p);
 	}
 }
