@@ -53,7 +53,7 @@ Messages:
     Reload: '&aAttempted to reload configuration. Please restart for changes with the storage.'
     Help:
       Top:
-        - '&e============== &fTokens Help &e=============='
+        - '&e============== &frTokens Help &e=============='
       User:
         - '&e/rTokens view &7- See how many tokens you have'
         - '&e/rTokens view [player] &7- See how many tokens [player] has'

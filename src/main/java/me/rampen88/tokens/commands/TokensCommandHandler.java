@@ -12,8 +12,8 @@ import java.util.Set;
 
 public class TokensCommandHandler implements CommandExecutor{
 
-	private MessageUtil messageUtil;
 	private Set<SimpleSubCommand> subCommands = new HashSet<>();
+	private MessageUtil messageUtil;
 
 	public TokensCommandHandler(Tokens plugin) {
 		messageUtil = plugin.getMessageUtil();
@@ -28,12 +28,7 @@ public class TokensCommandHandler implements CommandExecutor{
 
 	@Override
 	public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
-		SimpleSubCommand subCommand;
-		if(args.length == 0)
-			subCommand = getSubCommand("help");
-		else
-			subCommand = getSubCommand(args[0]);
-
+		SimpleSubCommand subCommand = getSubCommand(args.length == 0 ? "help" : args[0]);
 		if(subCommand == null){
 			commandSender.sendMessage(messageUtil.getMessage("Commands.UnknownCommand"));
 			return true;
