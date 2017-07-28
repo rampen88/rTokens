@@ -1,6 +1,6 @@
 package me.rampen88.tokens;
 
-import me.rampen88.tokens.commands.TokenCommand;
+import me.rampen88.tokens.commands.TokensCommandHandler;
 import me.rampen88.tokens.hooks.PlaceholderAPIHook;
 import me.rampen88.tokens.listeners.MenuListener;
 import me.rampen88.tokens.listeners.PlayerListener;
@@ -22,12 +22,13 @@ import java.util.List;
 
 public class Tokens extends JavaPlugin{
 
-	private Storage storage;
-	private MessageUtil messageUtil;
 	private static ItemBuilder itemBuilder;
-	private MenuHandler menuHandler;
-	private MenuListener menuListener;
+
 	private PlaceholderAPIHook placeholderAPIHook;
+	private MenuListener menuListener;
+	private MessageUtil messageUtil;
+	private MenuHandler menuHandler;
+	private Storage storage;
 
 	@Override
 	public void onEnable() {
@@ -55,7 +56,7 @@ public class Tokens extends JavaPlugin{
 	private void registerCommands(){
 		PluginCommand rTokens = getCommand("rtokens");
 
-		rTokens.setExecutor(new TokenCommand(this));
+		rTokens.setExecutor(new TokensCommandHandler(this));
 		rTokens.setAliases(Arrays.asList("token","tokens","rtoken"));
 	}
 

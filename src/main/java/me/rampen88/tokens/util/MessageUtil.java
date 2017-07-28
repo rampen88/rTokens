@@ -43,7 +43,7 @@ public class MessageUtil {
 	public List<String> translateColors(List<String> lore){
 		List<String> list = new ArrayList<>();
 		for(String s : lore){
-			list.add(net.md_5.bungee.api.ChatColor.translateAlternateColorCodes('&', s));
+			list.add(ChatColor.translateAlternateColorCodes('&', s));
 		}
 		return list;
 	}

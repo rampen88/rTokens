@@ -180,7 +180,7 @@ public class MySqlStorageImpl implements Storage {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				storageCallback.afterStorageCall(value);
+				storageCallback.run(value);
 			}
 		}.runTask(plugin);
 	}

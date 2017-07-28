@@ -24,7 +24,6 @@ public class ItemBuilder {
 	public ItemStack buildItem(Material m, int amount, String name, int damage, List<ItemEnchant> enchants, List<String> lore, List<ItemFlag> flags, Player p){
 
 		ItemStack item = new ItemStack(m, amount, (short)damage);
-
 		ItemMeta meta = item.getItemMeta();
 
 		// Attempt to add placeholders color to ItemName and lore if they are not null.

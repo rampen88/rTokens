@@ -9,8 +9,8 @@ public class InventoryItem {
 
 	private ItemStack item;
 	private ItemAction clickAction;
-	boolean closeInv;
 	private Integer cost;
+	boolean closeInv;
 	
 	InventoryItem(ItemStack item, ItemAction clickAction, boolean closeInv, Integer cost){
 		this.item = item;

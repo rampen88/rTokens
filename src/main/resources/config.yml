@@ -30,6 +30,7 @@ Messages:
   Commands:
     Amount: '&cAmount cannot be 0 or less.'
     PlayerNotOnline: '&cUnable to find player ''%player%''. Are they online?'
+    UnknownCommand: '&cThat command does not exist! try /rtokens help'
     Add:
       Usage: '&cIncorrect command usage. Try: /rTokens add <player> <amount>'
       Added: '&aSuccessfully added %amount% tokens to %player%.'

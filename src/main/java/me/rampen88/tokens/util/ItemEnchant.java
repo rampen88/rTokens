@@ -5,7 +5,6 @@ import org.bukkit.enchantments.Enchantment;
 public class ItemEnchant {
 
 	private Enchantment enchantment;
-
 	private int level;
 
 	public ItemEnchant(Enchantment enchantment, int level) {

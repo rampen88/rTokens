@@ -23,9 +23,7 @@ public class MenuConfig extends YamlConfiguration {
 	}
 	
 	private void load() throws IOException, InvalidConfigurationException {
-
 		this.getKeys(false).forEach(s -> set(s, null));
-
 		load(file);
 	}
 	
