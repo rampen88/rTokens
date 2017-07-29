@@ -16,7 +16,7 @@ public class ViewCommand extends SubCommand {
 		if(args.length < 2){
 			if(!hasPermission(commandSender, true)) return;
 
-			viewTokens((Player) commandSender, commandSender);
+			viewTokens((Player) commandSender, commandSender, "Self");
 			return;
 		}
 		if(!hasPermission(commandSender, "tokens.command.view.other", false)) return;
@@ -24,11 +24,11 @@ public class ViewCommand extends SubCommand {
 		Player p = getPlayerCheckOnline(commandSender, args[1]);
 		if(p == null) return;
 
-		viewTokens(p, commandSender);
+		viewTokens(p, commandSender, "Other");
 	}
 
-	private void viewTokens(Player p, CommandSender sender){
-		plugin.getStorage().getTokens(p.getUniqueId().toString(), value -> sender.sendMessage(messageUtil.getMessage("Commands.View.Other").replace("%player%", p.getName()).replace("%amount%", Integer.toString(value))));
+	private void viewTokens(Player p, CommandSender sender, String extraMsgPath){
+		plugin.getStorage().getTokens(p.getUniqueId().toString(), value -> sender.sendMessage(messageUtil.getMessage("Commands.View." + extraMsgPath).replace("%player%", p.getName()).replace("%amount%", Integer.toString(value))));
 	}
 
 }
