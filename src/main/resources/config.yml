@@ -27,6 +27,7 @@ Messages:
   AlreadyBought: '&cYou cannot buy this item more than once!'
   NoPermission: '&4You do not have permission to do that.'
   NotEnough: '&cYou do not have enough tokens to buy that!'
+  FullInventory: '&cYou didn''t have enough room in your inventory, so some of the items you bought have been dropped.'
   Commands:
     Amount: '&cAmount cannot be 0 or less.'
     PlayerNotOnline: '&cUnable to find player ''%player%''. Are they online?'

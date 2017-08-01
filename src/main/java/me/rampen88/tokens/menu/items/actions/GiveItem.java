@@ -68,6 +68,8 @@ public class GiveItem implements ItemAction{
 				drop.setAmount(toDrop);
 				p.getWorld().dropItem(p.getLocation(), drop);
 			}
+			p.sendMessage(plugin.getMessageUtil().getMessage("FullInventory"));
+			plugin.getLogger().info(p.getName() + " did not have enough room in their inventory, some of the items they bought have been dropped.");
 		}
 	}
 
