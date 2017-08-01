@@ -23,7 +23,6 @@ public class AddCommand extends SubCommand {
 		Integer amount = getAndValidateInput(commandSender, args[2]);
 		if (amount == null) return;
 
-		// Check that target player is online
 		Player p = getPlayerCheckOnline(commandSender, args[1]);
 		if (p == null) return;
 
@@ -33,7 +32,6 @@ public class AddCommand extends SubCommand {
 		p.sendMessage(messageUtil.getMessage("Commands.Add.Target").replace("%amount%", amount.toString()));
 		commandSender.sendMessage(messageUtil.getMessage("Commands.Add.Added").replace("%amount%", amount.toString()).replace("%player%", p.getName()));
 
-		// Log to console.
 		plugin.getLogger().info(commandSender.getName() + " added " + amount + " tokens to " + p.getName() + " (" + p.getUniqueId().toString() + ")");
 	}
 }

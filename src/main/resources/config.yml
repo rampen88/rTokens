@@ -58,6 +58,7 @@ Messages:
         - '&e/rTokens view &7- See how many tokens you have'
         - '&e/rTokens view [player] &7- See how many tokens [player] has'
         - '&e/rTokens send <player> <amount> &7- Send tokens to another player'
+        - '&e/rTokens help &7- Shows this'
       Admin:
         - '&e/rTokens add <player> <amount> &7- Adds tokens to the player'
         - '&e/rTokens take <player> <amount> &7- Takes tokens from the player'

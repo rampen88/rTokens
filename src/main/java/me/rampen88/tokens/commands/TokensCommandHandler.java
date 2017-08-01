@@ -28,7 +28,7 @@ public class TokensCommandHandler implements CommandExecutor{
 
 	@Override
 	public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
-		SimpleSubCommand subCommand = getSubCommand(args.length == 0 ? "help" : args[0]);
+		SimpleSubCommand subCommand = getSubCommand(args.length == 0 ? "view" : args[0]);
 		if(subCommand == null){
 			commandSender.sendMessage(messageUtil.getMessage("Commands.UnknownCommand"));
 			return true;
