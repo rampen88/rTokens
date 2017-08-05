@@ -40,7 +40,7 @@ public class InventoryItem {
 		return closeInv;
 	}
 
-	private void doTheThing(Player p, Tokens plugin){
+	protected void doTheThing(Player p, Tokens plugin){
 		if(clickAction != null){
 			clickAction.executeAction(p, plugin);
 		}

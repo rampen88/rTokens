@@ -27,7 +27,6 @@ public class InventoryTableItem extends InventoryRefreshItem{
 				if(value >= 1){
 					p.sendMessage(plugin.getMessageUtil().getMessage("AlreadyBought"));
 				}else{
-					plugin.getStorage().addToTable(p.getUniqueId().toString(), tableName);
 					InventoryTableItem.super.executeClick(p, plugin);
 				}
 
@@ -38,6 +37,13 @@ public class InventoryTableItem extends InventoryRefreshItem{
 		}
 
 		return closeInv;
+	}
+
+	@Override
+	protected void doTheThing(Player p, Tokens plugin) {
+		if(tableName != null)
+			plugin.getStorage().addToTable(p.getUniqueId().toString(), tableName);
+		super.doTheThing(p, plugin);
 	}
 
 	@Override

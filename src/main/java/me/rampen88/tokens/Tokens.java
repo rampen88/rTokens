@@ -71,7 +71,7 @@ public class Tokens extends JavaPlugin{
 	@Override
 	public void onDisable() {
 		HandlerList.unregisterAll(this);
-		storage.close();
+		if(storage != null) storage.close();
 	}
 
 	private Storage setupStorage(){

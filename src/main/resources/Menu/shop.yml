@@ -50,7 +50,7 @@ Items:
     CloseInventory: true
 
     # Item damage.
-    #Damage: 0
+    Damage: 0
 
     # Position of the item in the Inventory.
     Position-X: 5
